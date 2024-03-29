@@ -2,5 +2,6 @@ package org.example.model;
 
 public enum HerbFood {
     PALM,
-    GRASS
+    GRASS,
+    SHRIMP
 }

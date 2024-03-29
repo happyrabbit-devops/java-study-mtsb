@@ -1,23 +1,18 @@
 package org.example.service;
 
 import org.example.model.Animal;
-import org.example.model.Elephant;
-import org.example.model.Lion;
-
-import java.util.UUID;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public interface CreateAnimalService {
 
     Logger logger = Logger.getLogger(CreateAnimalService.class.getName());
 
+    Random random = new Random();
+
     default void createAnimal(int i) {
-        Animal animal;
-        if (i % 2 == 0) {
-            animal = new Elephant("Indian", "Elephant " + UUID.randomUUID(), 5000.354, "Friendly");
-        } else {
-            animal = new Lion("Safari", "Lion "+ UUID.randomUUID(), 10000.573, "Angry");
-        }
+        String[] animalNames = {"elephant", "lion", "cat", "tiger", "lynx", "whale"};
+        Animal animal = AnimalFactory.createAnimal(animalNames[random.nextInt(animalNames.length)]);
         var log = String.format("Created animal: %s %s cost %.2f character %s%n", animal.getBreed(), animal.getName(), animal.getCost(), animal.getCharacter());
         logger.info(log);
     }
