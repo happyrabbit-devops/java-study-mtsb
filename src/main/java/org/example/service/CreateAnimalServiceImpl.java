@@ -1,19 +1,21 @@
 package org.example.service;
 
+import org.example.storage.AnimalStorage;
+
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
     @Override
-    public void createAnimals(int n) {
+    public void createAnimals(int n, AnimalStorage storage) {
         for (int i = 0; i < n; i++) {
-            createAnimal(i);
+            storage.getAnimals().add(createAnimal(i));
         }
     }
 
     @Override
-    public void createAnimalsWithDoWhileLoop(int n) {
+    public void createAnimalsWithDoWhileLoop(int n, AnimalStorage storage) {
         int i = 0;
         do {
-            createAnimal(i);
+            storage.getAnimals().add(createAnimal(i));
             i++;
         } while (i < n);
     }
