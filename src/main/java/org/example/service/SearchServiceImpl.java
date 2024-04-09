@@ -22,8 +22,7 @@ public class SearchServiceImpl implements SearchService {
             throw new InvalidAnimalBirthDateException(String.format(EMPTY_BIRTH_DATE, animal.getClass().getSimpleName()));
         }
         String result;
-        int year = birthDate.getYear();
-        if ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)) {
+        if (birthDate.isLeapYear()) {
             result = String.format(LEAP_YEAR, animal.getClass().getSimpleName());
         } else {
             result = String.format(NOT_LEAP_YEAR, animal.getClass().getSimpleName());

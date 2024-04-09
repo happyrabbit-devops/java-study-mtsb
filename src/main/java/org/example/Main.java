@@ -16,7 +16,7 @@ public class Main {
 
     static Logger logger = Logger.getLogger(Main.class.getName());
 
-    static LocalDate formatBirthDate(String dateStr) {
+    public static LocalDate formatBirthDate(String dateStr) {
         return LocalDate.parse(dateStr, formatter);
     }
 
