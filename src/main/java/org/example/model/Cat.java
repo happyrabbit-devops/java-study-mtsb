@@ -12,6 +12,15 @@ public class Cat extends Predator {
         this.predatorTribe = PredatorTribes.SOUTH;
     }
 
+    public Cat(String breed, String name, double cost, String character, LocalDate birthDate) {
+        this.breed = breed;
+        this.name = name;
+        this.cost = cost;
+        this.character = character;
+        this.predatorTribe = PredatorTribes.SOUTH;
+        this.birthDate = birthDate;
+    }
+
     @Override
     public String getBreed() {
         return this.breed;

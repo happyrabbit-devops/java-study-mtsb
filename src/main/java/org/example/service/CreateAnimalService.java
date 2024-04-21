@@ -26,7 +26,7 @@ public interface CreateAnimalService {
         int i = 0;
         while (i < 10) {
             Animal animal = createAnimal(i);
-            animalsMap.computeIfAbsent(animal.getClass().getName(), key -> new ArrayList<>()).add(animal);
+            animalsMap.computeIfAbsent(animal.getClass().getSimpleName(), key -> new ArrayList<>()).add(animal);
             i++;
         }
         return animalsMap;

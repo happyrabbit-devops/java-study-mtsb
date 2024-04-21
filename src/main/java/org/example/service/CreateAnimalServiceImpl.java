@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.model.Animal;
-import org.example.storage.AnimalStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         Map<String, List<Animal>> animalsMap = new HashMap<>();
         for (int i = 0; i < n; i++) {
             Animal animal = createAnimal(i);
-            animalsMap.computeIfAbsent(animal.getClass().getName(), key -> new ArrayList<>()).add(animal);
+            animalsMap.computeIfAbsent(animal.getClass().getSimpleName(), key -> new ArrayList<>()).add(animal);
         }
         return animalsMap;
     }
@@ -26,7 +25,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         int i = 0;
         do {
             Animal animal = createAnimal(i);
-            animalsMap.computeIfAbsent(animal.getClass().getName(), key -> new ArrayList<>()).add(animal);
+            animalsMap.computeIfAbsent(animal.getClass().getSimpleName(), key -> new ArrayList<>()).add(animal);
             i++;
         } while (i < n);
         return animalsMap;
