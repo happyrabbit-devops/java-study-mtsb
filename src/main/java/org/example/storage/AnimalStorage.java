@@ -5,8 +5,9 @@ import org.example.model.Animal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class AnimalStorage {
-    private List<Animal> animals = new ArrayList<>();
+    private Map<String, List<Animal>> animals;
 }

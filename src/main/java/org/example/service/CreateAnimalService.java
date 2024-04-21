@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.model.Animal;
 import org.example.storage.AnimalStorage;
 
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -21,14 +21,17 @@ public interface CreateAnimalService {
         return animal;
     }
 
-    default void createAnimals(AnimalStorage storage) {
+    default Map<String, List<Animal>> createAnimals() {
+        Map<String, List<Animal>> animalsMap = new HashMap<>();
         int i = 0;
         while (i < 10) {
-            storage.getAnimals().add(createAnimal(i));
+            Animal animal = createAnimal(i);
+            animalsMap.computeIfAbsent(animal.getClass().getName(), key -> new ArrayList<>()).add(animal);
             i++;
         }
+        return animalsMap;
     }
 
-    void createAnimals(int n, AnimalStorage storage);
-    void createAnimalsWithDoWhileLoop(int n, AnimalStorage storage);
+    Map<String, List<Animal>> createAnimals(int n);
+    Map<String, List<Animal>> createAnimalsWithDoWhileLoop(int n);
 }
