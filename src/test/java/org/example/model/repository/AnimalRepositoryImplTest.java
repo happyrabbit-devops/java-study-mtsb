@@ -9,10 +9,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AnimalRepositoryImplTest {
+class AnimalRepositoryImplTest {
 
     @Test
-    public void testFindLeapYearNames() {
+    void testFindLeapYearNames() {
         AnimalRepositoryImpl animalRepo = new AnimalRepositoryImpl();
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
@@ -25,7 +25,7 @@ public class AnimalRepositoryImplTest {
     }
 
     @Test
-    public void testFindOlderAnimal() {
+    void testFindOlderAnimal() {
         AnimalRepositoryImpl animalRepo = new AnimalRepositoryImpl();
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
@@ -47,7 +47,7 @@ public class AnimalRepositoryImplTest {
     }
 
     @Test
-    public void testFindDuplicate() {
+    void testFindDuplicate() {
         AnimalRepositoryImpl animalRepo = new AnimalRepositoryImpl();
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
