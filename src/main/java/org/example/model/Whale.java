@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.time.LocalDate;
+
 import static org.example.model.HerbFood.SHRIMP;
 
 public class Whale extends Herbivorous {
@@ -30,5 +32,13 @@ public class Whale extends Herbivorous {
     @Override
     public String getCharacter() {
         return this.character;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDate;
+    }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

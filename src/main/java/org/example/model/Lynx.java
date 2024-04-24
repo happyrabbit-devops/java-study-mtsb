@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.time.LocalDate;
+
 public class Lynx extends Predator {
 
     public Lynx(String breed, String name, double cost, String character) {
@@ -28,5 +30,13 @@ public class Lynx extends Predator {
     @Override
     public String getCharacter() {
         return this.character;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDate;
+    }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

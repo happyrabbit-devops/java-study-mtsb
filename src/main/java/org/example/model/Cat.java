@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.time.LocalDate;
+
 public class Cat extends Predator {
 
     public Cat(String breed, String name, double cost, String character) {
@@ -8,6 +10,15 @@ public class Cat extends Predator {
         this.cost = cost;
         this.character = character;
         this.predatorTribe = PredatorTribes.SOUTH;
+    }
+
+    public Cat(String breed, String name, double cost, String character, LocalDate birthDate) {
+        this.breed = breed;
+        this.name = name;
+        this.cost = cost;
+        this.character = character;
+        this.predatorTribe = PredatorTribes.SOUTH;
+        this.birthDate = birthDate;
     }
 
     @Override
@@ -28,5 +39,14 @@ public class Cat extends Predator {
     @Override
     public String getCharacter() {
         return this.character;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

@@ -4,9 +4,11 @@ import org.example.model.*;
 import java.util.UUID;
 
 public class AnimalFactory {
+
     AnimalFactory() {
         //
     }
+
     public static Animal createAnimal(String type) {
         return switch (type.toLowerCase()) {
             case "elephant" -> new Elephant("Indian", "Elephant " + UUID.randomUUID(), 5000.354, "Friendly");

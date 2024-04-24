@@ -1,8 +1,9 @@
 package org.example.service;
 
 import org.example.model.Animal;
+import org.example.storage.AnimalStorage;
 
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -12,21 +13,25 @@ public interface CreateAnimalService {
 
     Random random = new Random();
 
-    default void createAnimal(int i) {
+    default Animal createAnimal(int i) {
         String[] animalNames = {"elephant", "lion", "cat", "tiger", "lynx", "whale"};
         Animal animal = AnimalFactory.createAnimal(animalNames[random.nextInt(animalNames.length)]);
-        var log = String.format("Created %d animal: %s %s cost %.2f character %s%n", i+1, animal.getBreed(), animal.getName(), animal.getCost(), animal.getCharacter());
+        var log = String.format("Создано %d животное: %s %s цена %.2f характер %s%n", i+1, animal.getBreed(), animal.getName(), animal.getCost(), animal.getCharacter());
         logger.info(log);
+        return animal;
     }
 
-    default void createAnimals() {
+    default Map<String, List<Animal>> createAnimals() {
+        Map<String, List<Animal>> animalsMap = new HashMap<>();
         int i = 0;
         while (i < 10) {
-            createAnimal(i);
+            Animal animal = createAnimal(i);
+            animalsMap.computeIfAbsent(animal.getClass().getSimpleName(), key -> new ArrayList<>()).add(animal);
             i++;
         }
+        return animalsMap;
     }
 
-    void createAnimals(int n);
-    void createAnimalsWithDoWhileLoop(int n);
+    Map<String, List<Animal>> createAnimals(int n);
+    Map<String, List<Animal>> createAnimalsWithDoWhileLoop(int n);
 }
