@@ -89,7 +89,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .orElse(0);
 
         return animals.stream()
-                .filter(animal -> LocalDate.now().getYear() - animal.getBirthDate().getYear() > 5 && animal.getCost() > averageCost)
+                .filter(animal -> animal.calculateAge() > 5 && animal.getCost() > averageCost)
                 .sorted(Comparator.comparing(Animal::getBirthDate))
                 .toList();
     }
