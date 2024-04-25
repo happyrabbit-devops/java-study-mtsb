@@ -42,7 +42,7 @@ class AnimalRepositoryImplTest {
         var result = animalRepo.findOlderAnimal(animalMap, 5);
         assertEquals(3, result.size());
         assertEquals(1014, result.get(olderAnimal1));
-        var result2 = animalRepo.findOlderAnimal(animalMap, 1010);
+        var result2 = animalRepo.findOlderAnimal(animalMap, 2010);
         assertEquals(1, result2.size());
         assertEquals(1014, result2.get(olderAnimal1));
     }
