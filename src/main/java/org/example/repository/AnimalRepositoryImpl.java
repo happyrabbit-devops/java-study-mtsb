@@ -39,21 +39,6 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         return olderAnimal;
     }
 
-    /*private Animal findOldestAnimal(Map<String, List<Animal>> animalMap) {
-        Animal oldestAnimal = null;
-        int maxAge = Integer.MIN_VALUE;
-        for (List<Animal> animalList : animalMap.values()) {
-            for (Animal animal : animalList) {
-                int animalAge = animal.calculateAge();
-                if (animalAge > maxAge) {
-                    maxAge = animalAge;
-                    oldestAnimal = animal;
-                }
-            }
-        }
-        return oldestAnimal;
-    }*/
-
     private Animal findOldestAnimal(Map<String, List<Animal>> animalMap) {
         return animalMap.values().stream()
                 .flatMap(List::stream)

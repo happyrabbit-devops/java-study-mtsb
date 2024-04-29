@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.model.Animal;
-import org.example.storage.AnimalStorage;
 
 import java.util.*;
 import java.util.logging.Logger;
