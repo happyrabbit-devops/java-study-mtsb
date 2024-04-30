@@ -6,17 +6,19 @@ import static org.example.model.HerbFood.PALM;
 
 public class Elephant extends Herbivorous {
 
-    public Elephant(String breed, String name, double cost, String character) {
-        this.breed = breed;
+    public Elephant(int id, Habitat habitat, String name, LocalDate birthDate, double cost, String character) {
+        this.id = id;
+        this.habitat = habitat;
         this.name = name;
+        this.birthDate = birthDate;
         this.cost = cost;
         this.character = character;
         this.herbFood = PALM;
     }
 
     @Override
-    public String getBreed() {
-        return this.breed;
+    public Habitat getHabitat() {
+        return this.habitat;
     }
 
     @Override
@@ -40,5 +42,10 @@ public class Elephant extends Herbivorous {
     }
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 }

@@ -4,8 +4,19 @@ import java.time.LocalDate;
 
 public class Tiger extends Predator {
 
-    public Tiger(String breed, String name, double cost, String character) {
-        this.breed = breed;
+    public Tiger(int id, Habitat habitat, String name, LocalDate birthDate, double cost, String character) {
+        this.id = id;
+        this.habitat = habitat;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.cost = cost;
+        this.character = character;
+        this.predatorTribe = PredatorTribes.SOUTH;
+    }
+
+    public Tiger(int id, Habitat habitat, String name, double cost, String character) {
+        this.id = id;
+        this.habitat = habitat;
         this.name = name;
         this.cost = cost;
         this.character = character;
@@ -13,8 +24,8 @@ public class Tiger extends Predator {
     }
 
     @Override
-    public String getBreed() {
-        return this.breed;
+    public Habitat getHabitat() {
+        return this.habitat;
     }
 
     @Override
@@ -38,5 +49,10 @@ public class Tiger extends Predator {
     }
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 }

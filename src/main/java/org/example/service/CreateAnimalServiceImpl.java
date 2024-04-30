@@ -7,7 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.utils.TextFileUtils.writeToLog;
+
 public class CreateAnimalServiceImpl implements CreateAnimalService {
+
+    public static final String MALE_NAMES_LOCATION = "https://raw.githubusercontent.com/Raven-SL/ru-pnames-list/master/lists/male_names_rus.txt";
+    public static final String FEMALE_NAMES_LOCATION = "https://raw.githubusercontent.com/Raven-SL/ru-pnames-list/master/lists/female_names_rus.txt";
 
     @Override
     public Map<String, List<Animal>> createAnimals(int n) {
@@ -29,5 +34,9 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
             i++;
         } while (i < n);
         return animalsMap;
+    }
+
+    public static void writeLogFileAnimal(Animal animal) {
+        writeToLog(animal.getInstanceName());
     }
 }

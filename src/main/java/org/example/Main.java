@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
+import static org.example.utils.TextFileUtils.LOG_FILE_PATH;
+import static org.example.utils.TextFileUtils.countLines;
 
 public class Main {
 
@@ -65,13 +67,17 @@ public class Main {
             if (nonNull(entry.getValue())) {
                 for (var animal : entry.getValue()) {
                     try {
-                        logger.fine(searchService.checkLeapYearAnimal(animal));
+                        var check = searchService.checkLeapYearAnimal(animal);
+                        logger.fine(check);
                     } catch (InvalidAnimalException | InvalidAnimalBirthDateException e) {
                         logger.info(e.getMessage());
                     }
                 }
             }
         }
+
+        var logCountMsg = String.format("Число строк в лог-файле: %d", countLines(LOG_FILE_PATH));
+        logger.info(logCountMsg);
 
     }
 }
