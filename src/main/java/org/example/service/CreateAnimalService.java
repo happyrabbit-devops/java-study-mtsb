@@ -1,11 +1,11 @@
 package org.example.service;
 
 import org.example.model.Animal;
-import org.example.storage.AnimalStorage;
 
 import java.util.*;
 import java.util.logging.Logger;
 
+import static org.example.service.CreateAnimalServiceImpl.writeLogFileAnimal;
 
 public interface CreateAnimalService {
 
@@ -15,9 +15,10 @@ public interface CreateAnimalService {
 
     default Animal createAnimal(int i) {
         String[] animalNames = {"elephant", "lion", "cat", "tiger", "lynx", "whale"};
-        Animal animal = AnimalFactory.createAnimal(animalNames[random.nextInt(animalNames.length)]);
-        var log = String.format("Создано %d животное: %s %s цена %.2f характер %s%n", i+1, animal.getBreed(), animal.getName(), animal.getCost(), animal.getCharacter());
+        Animal animal = AnimalFactory.createAnimal(animalNames[random.nextInt(animalNames.length)], i);
+        var log = String.format("Создано %d животное: %s%n", i+1, animal.getInstanceName());
         logger.info(log);
+        writeLogFileAnimal(animal);
         return animal;
     }
 

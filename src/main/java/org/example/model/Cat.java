@@ -4,26 +4,28 @@ import java.time.LocalDate;
 
 public class Cat extends Predator {
 
-    public Cat(String breed, String name, double cost, String character) {
-        this.breed = breed;
+    public Cat(int id, Habitat habitat, String name, double cost, String character) {
+        this.id = id;
+        this.habitat = habitat;
         this.name = name;
         this.cost = cost;
         this.character = character;
         this.predatorTribe = PredatorTribes.SOUTH;
     }
 
-    public Cat(String breed, String name, double cost, String character, LocalDate birthDate) {
-        this.breed = breed;
+    public Cat(int id, Habitat habitat, String name, LocalDate birthDate, double cost, String character) {
+        this.id = id;
+        this.habitat = habitat;
         this.name = name;
+        this.birthDate = birthDate;
         this.cost = cost;
         this.character = character;
         this.predatorTribe = PredatorTribes.SOUTH;
-        this.birthDate = birthDate;
     }
 
     @Override
-    public String getBreed() {
-        return this.breed;
+    public Habitat getHabitat() {
+        return this.habitat;
     }
 
     @Override
@@ -48,5 +50,10 @@ public class Cat extends Predator {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 }

@@ -33,7 +33,7 @@ class SearchServiceTest {
 
     @Test
     void testCheckLeapYearAnimal_PositiveCase() {
-        var animal = new Cat("Home", "Cat " + UUID.randomUUID(), 4300.573, "Angry Cat");
+        var animal = new Cat(1, Habitat.HOME, "Cat " + UUID.randomUUID(), 4300.573, "Angry Cat");
         animal.setBirthDate(formatBirthDate("22.03.2023"));
         try {
             String result = searchService.checkLeapYearAnimal(animal);
@@ -57,7 +57,7 @@ class SearchServiceTest {
 
     @Test
     void testCheckLeapYearAnimal_InvalidAnimalBirthDateException() {
-        var animal = new Tiger("Jungle", "Tiger " + UUID.randomUUID(), 300.573, "Evil Tiger");
+        var animal = new Tiger(1, Habitat.JUNGLE, "Tiger 1", 300.573, "Evil Tiger");
         try {
             searchService.checkLeapYearAnimal(animal);
             fail("Не получено ожидаемое исключение InvalidAnimalBirthDateException");

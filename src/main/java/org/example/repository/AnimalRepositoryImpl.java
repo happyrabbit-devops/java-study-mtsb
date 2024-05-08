@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import org.example.model.Animal;
+import org.example.utils.ResourceLoader;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -10,8 +11,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static org.example.utils.TextFileUtils.writeToJson;
 
 public class AnimalRepositoryImpl implements AnimalRepository {
+
+    private static final ResourceLoader resourceLoader = new ResourceLoader();
+
+    public static final String OLDER_RESULTS_FILE_PATH = resourceLoader.getFilePath("results/findOlderAnimal.json");
 
     @Override
     public Map<String, LocalDate> findLeapYearNames(Map<String, List<Animal>> animalMap) {
@@ -36,23 +42,9 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 olderAnimal.put(oldestAnimal, oldestAnimal.calculateAge());
             }
         }
+        writeToJson(olderAnimal, resourceLoader.getFilePath("results/findOlderAnimal.json"));
         return olderAnimal;
     }
-
-    /*private Animal findOldestAnimal(Map<String, List<Animal>> animalMap) {
-        Animal oldestAnimal = null;
-        int maxAge = Integer.MIN_VALUE;
-        for (List<Animal> animalList : animalMap.values()) {
-            for (Animal animal : animalList) {
-                int animalAge = animal.calculateAge();
-                if (animalAge > maxAge) {
-                    maxAge = animalAge;
-                    oldestAnimal = animal;
-                }
-            }
-        }
-        return oldestAnimal;
-    }*/
 
     private Animal findOldestAnimal(Map<String, List<Animal>> animalMap) {
         return animalMap.values().stream()
@@ -63,15 +55,16 @@ public class AnimalRepositoryImpl implements AnimalRepository {
 
     @Override
     public Map<String, Integer> findDuplicate(Map<String, List<Animal>> animalMap) {
-        return animalMap.values().stream()
+        var duplicates = animalMap.values().stream()
                 .flatMap(List::stream)
                 .collect(Collectors.groupingBy(animal -> animal.getClass().getSimpleName(),
                         Collectors.counting()))
                 .entrySet().stream()
                 .filter(entry -> entry.getValue() > 1)
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
+        writeToJson(duplicates, resourceLoader.getFilePath("results/findDuplicate.json"));
+        return duplicates;
     }
-
 
     @Override
     public double findAverageAge(List<Animal> animals) {
@@ -88,19 +81,24 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .average()
                 .orElse(0);
 
-        return animals.stream()
+        var oldAndExpensive = animals.stream()
                 .filter(animal -> animal.calculateAge() > 5 && animal.getCost() > averageCost)
                 .sorted(Comparator.comparing(Animal::getBirthDate))
                 .toList();
+        writeToJson(oldAndExpensive, resourceLoader.getFilePath("results/findOldAndExpensive.json"));
+        return oldAndExpensive;
     }
 
     @Override
     public List<String> findMinCostAnimals(List<Animal> animals) {
-        return animals.stream()
+        var minCostAnimals = animals.stream()
                 .sorted(Comparator.comparingDouble(Animal::getCost))
                 .limit(3)
                 .map(Animal::getName)
                 .sorted(Comparator.reverseOrder())
                 .toList();
+        writeToJson(minCostAnimals, resourceLoader.getFilePath("results/findMinCostAnimals.json"));
+        return minCostAnimals;
     }
+
 }
