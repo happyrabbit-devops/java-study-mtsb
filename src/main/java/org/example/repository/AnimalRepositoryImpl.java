@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import org.example.model.Animal;
+import org.example.utils.ResourceLoader;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -10,13 +11,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
-import static org.example.utils.TextFileUtils.getCurrentMethodName;
 import static org.example.utils.TextFileUtils.writeToJson;
 
 public class AnimalRepositoryImpl implements AnimalRepository {
 
-    public static final String RESULTS_FILE_PATH = "src/main/resources/results/%s.json";
-    public static final String OLDER_RESULTS_FILE_PATH = "src/main/resources/results/findOlderAnimal.json";
+    private static final ResourceLoader resourceLoader = new ResourceLoader();
+
+    public static final String OLDER_RESULTS_FILE_PATH = resourceLoader.getFilePath("results/findOlderAnimal.json");
 
     @Override
     public Map<String, LocalDate> findLeapYearNames(Map<String, List<Animal>> animalMap) {
@@ -41,11 +42,9 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 olderAnimal.put(oldestAnimal, oldestAnimal.calculateAge());
             }
         }
-        writeToJson(olderAnimal, String.format(RESULTS_FILE_PATH, getCurrentMethodName()));
+        writeToJson(olderAnimal, resourceLoader.getFilePath("results/findOlderAnimal.json"));
         return olderAnimal;
     }
-
-
 
     private Animal findOldestAnimal(Map<String, List<Animal>> animalMap) {
         return animalMap.values().stream()
@@ -63,7 +62,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .entrySet().stream()
                 .filter(entry -> entry.getValue() > 1)
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
-        writeToJson(duplicates, String.format(RESULTS_FILE_PATH, getCurrentMethodName()));
+        writeToJson(duplicates, resourceLoader.getFilePath("results/findDuplicate.json"));
         return duplicates;
     }
 
@@ -86,7 +85,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .filter(animal -> animal.calculateAge() > 5 && animal.getCost() > averageCost)
                 .sorted(Comparator.comparing(Animal::getBirthDate))
                 .toList();
-        writeToJson(oldAndExpensive, String.format(RESULTS_FILE_PATH, getCurrentMethodName()));
+        writeToJson(oldAndExpensive, resourceLoader.getFilePath("results/findOldAndExpensive.json"));
         return oldAndExpensive;
     }
 
@@ -98,7 +97,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .map(Animal::getName)
                 .sorted(Comparator.reverseOrder())
                 .toList();
-        writeToJson(minCostAnimals, String.format(RESULTS_FILE_PATH, getCurrentMethodName()));
+        writeToJson(minCostAnimals, resourceLoader.getFilePath("results/findMinCostAnimals.json"));
         return minCostAnimals;
     }
 

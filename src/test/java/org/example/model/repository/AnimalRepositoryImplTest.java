@@ -34,9 +34,9 @@ class AnimalRepositoryImplTest {
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
         var olderAnimal1 = new Cat(1, HOME, "Cat Murzik", LocalDate.of(1010, 1, 1), 4300.573, "Angry Cat");
-        var olderAnimal2 = new Cat(2,HOME, "Cat Murzik", LocalDate.of(1910, 1, 1),  4300.573, "Angry Cat");
-        var olderAnimal3 = new Cat(3,HOME, "Cat Murzik", LocalDate.of(2010, 1, 1), 4300.573, "Angry Cat");
-        var olderAnimal4 = new Cat(4,HOME, "Cat Murzik", LocalDate.of(2024, 1, 1), 4300.573, "Angry Cat");
+        var olderAnimal2 = new Cat(2, HOME, "Cat Murzik", LocalDate.of(1910, 1, 1),  4300.573, "Angry Cat");
+        var olderAnimal3 = new Cat(3, HOME, "Cat Murzik", LocalDate.of(2010, 1, 1), 4300.573, "Angry Cat");
+        var olderAnimal4 = new Cat(4, HOME, "Cat Murzik", LocalDate.of(2024, 1, 1), 4300.573, "Angry Cat");
         animals.add(olderAnimal1);
         animals.add(olderAnimal2);
         animals.add(olderAnimal3);
