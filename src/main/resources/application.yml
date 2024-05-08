@@ -1,0 +1,16 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /zoo
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: INFO
+        orm:
+          jpa: ERROR
+        jdbc:
+          datasource: ERROR
+        transaction: ERROR
+      hibernate: ERROR
