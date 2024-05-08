@@ -1,14 +1,14 @@
 package org.parallel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
+
+import static org.example.utils.TextFileUtils.downloadTextFromURL;
 
 public class TextSearch {
 
@@ -41,30 +41,10 @@ public class TextSearch {
 
     }
 
-    private static String downloadTextFromURL() {
-
-        var stringBuilder = new StringBuilder();
-
-        try {
-            var url = new URL(TextSearch.TEXT_LOCATION);
-            var connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            var reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
-            reader.close();
-        } catch (IOException e) {
-            logger.warning(e.getMessage());
-        }
-        return stringBuilder.toString();
-
-    }
-
     public static int execute(String substring) {
 
-        var text = downloadTextFromURL();
+        var text = downloadTextFromURL(TextSearch.TEXT_LOCATION, String.class);
+        assert text != null;
         int chunkSize = text.length() / THREADS_COUNT;
         var executor = Executors.newFixedThreadPool(THREADS_COUNT);
         List<Future<Integer>> results = new ArrayList<>();
