@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AnimalRepository {
+
     Map<String, LocalDate> findLeapYearNames(Map<String, List<Animal>> animalMap);
 
     Map<Animal, Integer> findOlderAnimal(Map<String, List<Animal>> animalMap, int age);

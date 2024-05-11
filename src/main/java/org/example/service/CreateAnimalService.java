@@ -35,4 +35,5 @@ public interface CreateAnimalService {
 
     Map<String, List<Animal>> createAnimals(int n);
     Map<String, List<Animal>> createAnimalsWithDoWhileLoop(int n);
+
 }

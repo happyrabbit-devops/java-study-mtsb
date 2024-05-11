@@ -1,11 +1,14 @@
 package org.example.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exception.InvalidAnimalBirthDateException;
 import org.example.exception.InvalidAnimalException;
 import org.example.model.Animal;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-
+@Service
+@Slf4j
 public class SearchServiceImpl implements SearchService {
 
     private static final String INVALID_ANIMAL_CLASS = "На вход пришел некорректный объект животного!";

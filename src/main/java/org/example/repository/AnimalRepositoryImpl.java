@@ -1,7 +1,14 @@
 package org.example.repository;
 
+import jakarta.annotation.PostConstruct;
+import lombok.Data;
 import org.example.model.Animal;
+import org.example.service.CreateAnimalServiceImpl;
+import org.example.storage.AnimalStorage;
 import org.example.utils.ResourceLoader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -13,11 +20,29 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 import static org.example.utils.TextFileUtils.writeToJson;
 
+@Repository
+@Data
 public class AnimalRepositoryImpl implements AnimalRepository {
 
     private static final ResourceLoader resourceLoader = new ResourceLoader();
 
     public static final String OLDER_RESULTS_FILE_PATH = resourceLoader.getFilePath("results/findOlderAnimal.json");
+
+    private final ApplicationContext context;
+
+    private AnimalStorage storage;
+
+    @Autowired
+    public AnimalRepositoryImpl(ApplicationContext context) {
+        this.context = context;
+    }
+
+    @PostConstruct
+    public void init() {
+        var createAnimalService = context.getBean(CreateAnimalServiceImpl.class);
+        this.storage = new AnimalStorage();
+        storage.setAnimals(createAnimalService.createAnimals(10));
+    }
 
     @Override
     public Map<String, LocalDate> findLeapYearNames(Map<String, List<Animal>> animalMap) {

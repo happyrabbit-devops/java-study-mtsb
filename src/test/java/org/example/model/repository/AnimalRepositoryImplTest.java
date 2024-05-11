@@ -4,6 +4,8 @@ import org.example.model.Animal;
 import org.example.model.Cat;
 import org.example.repository.AnimalRepositoryImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -15,9 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnimalRepositoryImplTest {
 
+    @Mock
+    private ApplicationContext context;
+
     @Test
     void testFindLeapYearNames() {
-        var animalRepo = new AnimalRepositoryImpl();
+        var animalRepo = new AnimalRepositoryImpl(context);
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
         var leapYearAnimal = new Cat(1, HOME, "Barsik", LocalDate.of(2012, 2, 29), 4300.573, "Angry Cat");
@@ -30,7 +35,7 @@ class AnimalRepositoryImplTest {
 
     @Test
     void testFindOlderAnimal() {
-        var animalRepo = new AnimalRepositoryImpl();
+        var animalRepo = new AnimalRepositoryImpl(context);
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
         var olderAnimal1 = new Cat(1, HOME, "Cat Murzik", LocalDate.of(1010, 1, 1), 4300.573, "Angry Cat");
@@ -54,7 +59,7 @@ class AnimalRepositoryImplTest {
 
     @Test
     void testFindDuplicate() {
-        var animalRepo = new AnimalRepositoryImpl();
+        var animalRepo = new AnimalRepositoryImpl(context);
         Map<String, List<Animal>> animalMap = new HashMap<>();
         List<Animal> animals = new ArrayList<>();
         var animal1 = new Cat(1, HOME, "Cat Barsik", LocalDate.of(2015, 3, 10), 4300.573, "Angry Cat");
@@ -69,7 +74,7 @@ class AnimalRepositoryImplTest {
     }
     @Test
     void testFindAverageAge() {
-        var repository = new AnimalRepositoryImpl();
+        var repository = new AnimalRepositoryImpl(context);
         var animal1 = new Cat(1, HOME, "Cat Murzik", LocalDate.of(1010, 1, 1), 4300.573, "Angry Cat");
         var animal2 = new Cat(2, HOME, "Cat Murzik", LocalDate.of(1910, 1, 1), 4300.573, "Angry Cat");
         var animal3 = new Cat(3, HOME, "Cat Murzik", LocalDate.of(2010, 1, 1), 4300.573, "Angry Cat");
@@ -81,7 +86,7 @@ class AnimalRepositoryImplTest {
 
     @Test
     void testFindOldAndExpensive() {
-        var repository = new AnimalRepositoryImpl();
+        var repository = new AnimalRepositoryImpl(context);
         var animal1 = new Cat(1, HOME, "Cat Murzik 1", LocalDate.of(2020, 1, 1), 100, "Angry Cat");
         var animal2 = new Cat(2, HOME, "Cat Murzik 2", LocalDate.of(2024, 1, 1), 200, "Angry Cat");
         var animal3 = new Cat(3, HOME, "Cat Murzik 3", LocalDate.of(2010, 1, 1), 400, "Angry Cat");
@@ -93,7 +98,7 @@ class AnimalRepositoryImplTest {
 
     @Test
     void testFindMinCostAnimals() {
-        var repository = new AnimalRepositoryImpl();
+        var repository = new AnimalRepositoryImpl(context);
         var animal1 = new Cat(1, HOME, "Cat Murzik 1", LocalDate.of(1010, 1, 1), 4300.573, "Angry Cat");
         var animal2 = new Cat(2, HOME, "Cat Murzik 2", LocalDate.of(1910, 1, 1), 4300.573, "Angry Cat");
         var animal3 = new Cat(3, HOME, "Cat Murzik 3", LocalDate.of(2010, 1, 1), 4300.573, "Angry Cat");
