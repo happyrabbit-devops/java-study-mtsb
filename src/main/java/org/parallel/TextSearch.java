@@ -1,26 +1,26 @@
 package org.parallel;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 import static org.example.utils.TextFileUtils.downloadTextFromURL;
 
+@Slf4j
 public class TextSearch {
 
-    static Logger logger = Logger.getLogger(TextSearch.class.getName());
-    
     private static final String TEXT_LOCATION = "https://raw.githubusercontent.com/dscape/spell/master/test/resources/big.txt";
     private static final String SEARCH_SUBSTR = "CHAPTER";
     private static final int THREADS_COUNT = 6;
 
     public static void main(String[] args) {
         var logInfo = String.format("Число вхождений подстроки '%s': %d", SEARCH_SUBSTR, execute(SEARCH_SUBSTR));
-        logger.info(logInfo);
+        log.info(logInfo);
     }
 
     private static Callable<Integer> getIntegerCallable(int i, int chunkSize, String text, String substring) {
@@ -58,7 +58,7 @@ public class TextSearch {
             try {
                 totalCount += result.get();
             } catch (InterruptedException | ExecutionException e) {
-                logger.warning(e.getMessage());
+                log.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         }

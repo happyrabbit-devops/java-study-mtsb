@@ -3,8 +3,12 @@ package org.example.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,16 +19,13 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
+import static org.example.repository.AnimalRepositoryImpl.resourceLoader;
 import static org.example.utils.Const.EMPTY_STR;
 import static org.example.utils.Const.SPACE;
 
+@Slf4j
 public class TextFileUtils {
-
-    static Logger logger = Logger.getLogger(TextFileUtils.class.getName());
-
-    public static final String LOG_FILE_PATH = "src/main/resources/animals/logData.txt";
 
     private TextFileUtils() {
         //
@@ -56,7 +57,7 @@ public class TextFileUtils {
                 throw new IllegalArgumentException("Неподдерживаемый тип");
             }
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }
@@ -67,7 +68,7 @@ public class TextFileUtils {
             byte[] bytes = Files.readAllBytes(path);
             return new String(bytes, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return EMPTY_STR;
         }
     }
@@ -79,13 +80,13 @@ public class TextFileUtils {
                     .findFirst()
                     .orElseThrow(() -> new IOException("Не найдена секретная информация по индексу: " + lineIndex));
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return EMPTY_STR;
         }
     }
 
-    public static void writeToLog(String log) {
-        var logFilePath = Paths.get(LOG_FILE_PATH);
+    public static void writeToLog(String logStr) {
+        var logFilePath = Paths.get(resourceLoader.getFilePath("animals/logData.txt"));
         try (var lines = Files.lines(logFilePath, StandardCharsets.UTF_8)) {
             Files.createDirectories(logFilePath.getParent());
             if (!Files.exists(logFilePath)) {
@@ -93,10 +94,10 @@ public class TextFileUtils {
             }
             int lineNumber = (int) lines.count();
             try (var writer = Files.newBufferedWriter(logFilePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
-                writer.write(String.format("%d %s%n", lineNumber + 1, log));
+                writer.write(String.format("%d %s%n", lineNumber + 1, logStr));
             }
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -108,7 +109,7 @@ public class TextFileUtils {
             Files.createDirectories(logFilePath.getParent());
             objectMapper.writeValue(new File(outputPath), result);
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -119,7 +120,7 @@ public class TextFileUtils {
             var jsonString = Files.readString(Paths.get(filePath));
             return gson.fromJson(jsonString, type);
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -139,8 +140,7 @@ public class TextFileUtils {
                 }
             }
             var newKey = builder.toString().trim();
-            var consoleLog = String.format("findOlderAnimal %s, возраст: %s", newKey, entry.getValue());
-            logger.info(consoleLog);
+            log.info(String.format("findOlderAnimal %s, возраст: %s", newKey, entry.getValue()));
         }
     }
 
@@ -149,7 +149,7 @@ public class TextFileUtils {
         try (var lines = Files.lines(path)){
             return lines.count();
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return -1;
         }
     }

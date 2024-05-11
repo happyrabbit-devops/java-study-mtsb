@@ -3,11 +3,10 @@ package org.example.model;
 import java.time.LocalDate;
 import java.time.Period;
 
+import static org.example.repository.AnimalRepositoryImpl.resourceLoader;
 import static org.example.utils.TextFileUtils.readFromFile;
 
 public interface Animal {
-
-    String SECRET_FILE_PATH = "src/main/resources/secretStore/secretInformation.txt";
 
     Habitat getHabitat();
     String getName();
@@ -19,7 +18,7 @@ public interface Animal {
     int getId();
 
     default String getSecretInformation() {
-        return readFromFile(SECRET_FILE_PATH, getId());
+        return readFromFile(resourceLoader.getFilePath("secretStore/secretInformation.txt"), getId());
     }
 
     default int calculateAge() {

@@ -1,15 +1,14 @@
 package org.example.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
-
+@Slf4j
 public class ResourceLoader {
 
     private final ClassLoader classLoader;
-
-    static Logger logger = Logger.getLogger(ResourceLoader.class.getName());
 
     public ResourceLoader() {
         this.classLoader = getClass().getClassLoader();
@@ -25,7 +24,7 @@ public class ResourceLoader {
         try {
             return Paths.get(resourcesURL.toURI()).toString();
         } catch (URISyntaxException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
 

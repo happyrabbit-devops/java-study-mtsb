@@ -1,11 +1,11 @@
 package org.parallel;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
+@Slf4j
 public class ParallelCounter {
-
-    static Logger logger = Logger.getLogger(ParallelCounter.class.getName());
 
     private static final int TARGET_LIMIT = 500000;
     private static final int THREADS_COUNT = 4;
@@ -43,7 +43,7 @@ public class ParallelCounter {
             try {
                 thread.join();
             } catch (InterruptedException e) {
-                logger.warning(e.getMessage());
+                log.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         }
@@ -52,8 +52,7 @@ public class ParallelCounter {
     }
 
     public static void main(String[] args) {
-        var logInfo = String.format("Значение счетчика: %d", execute());
-        logger.info(logInfo);
+        log.info(String.format("Значение счетчика: %d", execute()));
     }
 
 }
