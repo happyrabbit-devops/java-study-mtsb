@@ -1,26 +1,26 @@
 package org.parallel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.logging.Logger;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import static org.example.utils.TextFileUtils.downloadTextFromURL;
+
+@Slf4j
 public class TextSearch {
 
-    static Logger logger = Logger.getLogger(TextSearch.class.getName());
-    
     private static final String TEXT_LOCATION = "https://raw.githubusercontent.com/dscape/spell/master/test/resources/big.txt";
     private static final String SEARCH_SUBSTR = "CHAPTER";
     private static final int THREADS_COUNT = 6;
 
     public static void main(String[] args) {
         var logInfo = String.format("Число вхождений подстроки '%s': %d", SEARCH_SUBSTR, execute(SEARCH_SUBSTR));
-        logger.info(logInfo);
+        log.info(logInfo);
     }
 
     private static Callable<Integer> getIntegerCallable(int i, int chunkSize, String text, String substring) {
@@ -41,30 +41,10 @@ public class TextSearch {
 
     }
 
-    private static String downloadTextFromURL() {
-
-        var stringBuilder = new StringBuilder();
-
-        try {
-            var url = new URL(TextSearch.TEXT_LOCATION);
-            var connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            var reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
-            reader.close();
-        } catch (IOException e) {
-            logger.warning(e.getMessage());
-        }
-        return stringBuilder.toString();
-
-    }
-
     public static int execute(String substring) {
 
-        var text = downloadTextFromURL();
+        var text = downloadTextFromURL(TextSearch.TEXT_LOCATION, String.class);
+        assert text != null;
         int chunkSize = text.length() / THREADS_COUNT;
         var executor = Executors.newFixedThreadPool(THREADS_COUNT);
         List<Future<Integer>> results = new ArrayList<>();
@@ -78,7 +58,7 @@ public class TextSearch {
             try {
                 totalCount += result.get();
             } catch (InterruptedException | ExecutionException e) {
-                logger.warning(e.getMessage());
+                log.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         }

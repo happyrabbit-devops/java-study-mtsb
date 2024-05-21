@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 public class Lynx extends Predator {
 
+    public Lynx() {
+    }
+
     public Lynx(int id, Habitat habitat, String name, LocalDate birthDate, double cost, String character) {
         this.id = id;
         this.habitat = habitat;

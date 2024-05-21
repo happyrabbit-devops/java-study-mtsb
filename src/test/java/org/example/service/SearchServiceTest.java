@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.UUID;
 
-import static org.example.Main.formatBirthDate;
+import static org.example.cg.impl.ZooCgServiceImpl.formatBirthDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SearchServiceTest {

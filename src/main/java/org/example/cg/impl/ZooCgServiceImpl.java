@@ -1,36 +1,53 @@
-package org.example;
+package org.example.cg.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exception.InvalidAnimalBirthDateException;
 import org.example.exception.InvalidAnimalException;
 import org.example.model.Animal;
+import org.example.repository.AnimalRepositoryImpl;
 import org.example.service.CreateAnimalServiceImpl;
 import org.example.service.SearchServiceImpl;
 import org.example.storage.AnimalStorage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
-import static org.example.utils.TextFileUtils.LOG_FILE_PATH;
+import static org.example.repository.AnimalRepositoryImpl.resourceLoader;
 import static org.example.utils.TextFileUtils.countLines;
 
-public class Main {
+@Service
+@Slf4j
+public class ZooCgServiceImpl implements ZooCgService {
+
+    @Value("${CRON_DISABLED:false}")
+    private boolean cronDisabled;
+
+    private final SearchServiceImpl searchService;
+    private final AnimalRepositoryImpl animalRepository;
+
+    @Autowired
+    public ZooCgServiceImpl(SearchServiceImpl searchService, AnimalRepositoryImpl animalRepository) {
+        this.searchService = searchService;
+        this.animalRepository = animalRepository;
+    }
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-    static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static LocalDate formatBirthDate(String dateStr) {
         return LocalDate.parse(dateStr, formatter);
     }
 
-    static SearchServiceImpl searchService = new SearchServiceImpl();
-
-    public static void main(String[] args) {
+    @Override
+    public void processZoo() {
 
         var zoo1 = new AnimalStorage();
         var zoo2 = new AnimalStorage();
@@ -67,17 +84,31 @@ public class Main {
             if (nonNull(entry.getValue())) {
                 for (var animal : entry.getValue()) {
                     try {
-                        var check = searchService.checkLeapYearAnimal(animal);
-                        logger.fine(check);
+                        log.info(searchService.checkLeapYearAnimal(animal));
                     } catch (InvalidAnimalException | InvalidAnimalBirthDateException e) {
-                        logger.info(e.getMessage());
+                        log.error(e.getMessage());
                     }
                 }
             }
         }
 
-        var logCountMsg = String.format("Число строк в лог-файле: %d", countLines(LOG_FILE_PATH));
-        logger.info(logCountMsg);
-
+        log.info(String.format("Число строк в лог-файле: %d",
+                countLines(resourceLoader.getFilePath("animals/logData.txt"))));
     }
+
+    @Scheduled(cron = "*/10 * * * * *")
+    public void animalRepositoryPeriod() {
+        if (!cronDisabled) {
+            log.info("Вызов функции раз в минуту: "+new Date());
+            animalRepository.findOlderAnimal(30);
+            log.info(String.format("Средний возраст кошек: %f.1 лет",
+                    animalRepository.findAverageAge("Cat")));
+            animalRepository.findDuplicate();
+            animalRepository.findMinCostAnimals("Lion");
+            animalRepository.findOldAndExpensive("Whale");
+            log.info(String.format("Число строк в лог-файле: %d",
+                    countLines(resourceLoader.getFilePath("animals/logData.txt"))));
+        }
+    }
+
 }
